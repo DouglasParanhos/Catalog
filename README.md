@@ -12,3 +12,9 @@ MySQL configurations are:
 
 If you want customized configurations, you should edit it in server/db/connection.js.
 Script with database tables is in server/create_database.mysql but don't worry, if you don't want to create it by yourself, when jondeJS starts, it will be created.
+
+NodeJS uses port 3001 (can be configured in server/index.js) and uses some modules:
+
+consign (npm install consign)
+body-parser (npm install body-parser)
+mysql (npm install mysql)
