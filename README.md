@@ -15,6 +15,7 @@ Script with database tables is in server/create_database.mysql but don't worry, 
 
 NodeJS uses port 3001 (can be configured in server/index.js) and uses some modules:
 
+express (npm install express)
 consign (npm install consign)
 body-parser (npm install body-parser)
 mysql (npm install mysql)
