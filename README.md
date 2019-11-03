@@ -10,4 +10,4 @@ MySQL configurations are:
  password: 'admin',
  database: 'Catalog'
 
-If you want customized configurations, you should edit in server/db/connection.js
+If you want customized configurations, you should edit it in server/db/connection.js.
