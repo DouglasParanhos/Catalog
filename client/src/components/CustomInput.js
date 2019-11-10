@@ -11,7 +11,7 @@ class CustomInput extends Component {
         return (
             <div>
                 <label htmlFor={this.props.id}>{this.props.name}</label>
-                <input id={this.props.id} type={this.props.type} name={this.props.name}/>
+                <input id={this.props.id} type={this.props.type} name={this.props.name} onChange={this.props.onChange}/>
             </div>
         );
     }

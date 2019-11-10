@@ -1,6 +1,7 @@
 const Album = require('../service/album.js')
 
 module.exports = app => {
+
     app.get('/albums', (req, res) => {
         Album.findAll(res);
     });
@@ -9,6 +10,12 @@ module.exports = app => {
         const id = parseInt(req.params.id);
 
         Album.findById(id, res);
+    });
+
+    app.get('/albums/bytext/:text', (req, res) => {
+        const text = parseInt(req.params.text);
+
+        Album.findById(text, res);
     });
 
     app.post('/albums', (req, res) => {

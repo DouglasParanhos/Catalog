@@ -25,20 +25,20 @@ class Album {
             } else {
                 res.status(200).json(results);
             }
-        })
+        });
     }
 
     findById(id, res) {
         const sql = `SELECT * FROM Album WHERE id=${id}`;
 
         connection.query(sql, (error, results) => {
-            const album = results[0]
+            const album = results[0];
             if(error) {
                 res.status(400).json(error);
             } else {
                 res.status(200).json(album);
             }
-        })
+        });
     }
 
 
@@ -61,7 +61,7 @@ class Album {
             } else {
                 res.status(200).json(results);
             }
-        })
+        });
     }
 
     update(id, values, res) {
@@ -73,7 +73,7 @@ class Album {
             } else {
                 res.status(200).json({...values, id});
             }
-        })
+        });
     }
 
     delete(id, res) {
@@ -85,7 +85,7 @@ class Album {
             } else {
                 res.status(200).json({id});
             }
-        })
+        });
     }
 }
 
