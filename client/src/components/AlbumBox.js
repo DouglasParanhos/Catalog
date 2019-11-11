@@ -8,9 +8,10 @@ class AlbumBox extends Component {
     constructor(){
         super();
         this.state = {albums: []};
+        this.refreshTable = this.refreshTable.bind(this);
     }
 
-    componentDidMount(){
+    refreshTable(){
         $.ajax({
             url:"http://localhost:3001/albums",
             dataType: 'json',
@@ -19,11 +20,15 @@ class AlbumBox extends Component {
             }.bind(this)
         });
     }
+
+    componentDidMount(){
+        this.refreshTable();
+    }
     
     render(){
         return (
             <div>
-                <FormInputs />
+                <FormInputs refreshTableMethod={this.refreshTable}/>
                 <AlbumsTable albums={this.state.albums}/>
             </div>
         );

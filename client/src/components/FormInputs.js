@@ -13,6 +13,7 @@ class FormInputs extends Component {
         this.createRecord = this.createRecord.bind(this);
         this.setArtist = this.setArtist.bind(this);
         this.setDescription = this.setDescription.bind(this);
+        this.setSearchString = this.setSearchString.bind(this);
     }
 
     findByText(event){
@@ -38,9 +39,9 @@ class FormInputs extends Component {
             contentType: 'application/json',
             dataType: 'json',
             type:'post',
-            data: JSON.stringify({}),
+            data: JSON.stringify({artist: this.state.artist, description: this.state.description}),
             success:function(response){
-                
+                this.props.refreshTableMethod();
             },
             error: function(response){
                 console.log(response);
@@ -56,6 +57,10 @@ class FormInputs extends Component {
         this.setState({description:event.target.value});
     }
 
+    setSearchString(event){
+        this.setState({description:event.target.value});
+    }
+
     render(){
         return (
             <div>
@@ -65,7 +70,7 @@ class FormInputs extends Component {
                     <CustomButton text='Add' type="submit"/>
                 </form>
                 <form id="search" onSubmit={this.findByText} method="get">
-                    <CustomInput id='labelSearch' type='text' name='Search'/>
+                    <CustomInput id='labelSearch' type='text' name='Search' onChange={this.setSearchString}/>
                     <input id='searchInputButton' type='submit'/>
                 </form>
             </div>
