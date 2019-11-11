@@ -5,6 +5,32 @@ class Album {
 
         const albumToBeInserted = {...album};
 
+        let artistNameEmpty = false;
+        if(albumToBeInserted.artist == ''){
+            artistNameEmpty = true;
+        }
+
+        let descriptionEmpty = false;
+        if(albumToBeInserted.description == ''){
+            descriptionEmpty = true;
+        }
+
+        const validationArtist = {
+            message: 'Artist Name can\'t be empty'
+        }
+
+        const validationDescription = {
+            message: 'Description can\'t be empty'
+        }
+
+        if(artistNameEmpty) {
+            res.status(400).json(validationArtist);
+            return;
+        } else if(descriptionEmpty){
+            res.status(400).json(validationDescription);
+            return;
+        }
+
         const sql = 'INSERT INTO Album SET ?';
 
         connection.query(sql, albumToBeInserted, (error, results) => {
@@ -53,7 +79,7 @@ class Album {
             res.status(400).json(validation);
         }
 
-        const sql = `SELECT * FROM Album WHERE description LIKE %${text}% OR artist LIKE %${text}%`;
+        const sql = `SELECT * FROM Album WHERE LOWER(description) LIKE LOWER(%${text}%) OR artist LIKE LOWER(%${text}%)`;
 
         connection.query(sql, (error, results) => {
             if(error) {

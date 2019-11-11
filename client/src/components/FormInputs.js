@@ -29,7 +29,7 @@ class FormInputs extends Component {
                 // this.setState({albums:response});
             },
             error: function(response){
-                console.log(response);
+                console.log(response.status);
             }
         });
     }
@@ -44,9 +44,10 @@ class FormInputs extends Component {
             data: JSON.stringify({artist: this.state.artist, description: this.state.description}),
             success:function(response){
                 PubSub.publish('updateAlbums');
+                console.log(response);
             },
             error: function(response){
-                console.log(response);
+                console.log(response.status);
             }
         });
     }
