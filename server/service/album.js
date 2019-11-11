@@ -71,10 +71,11 @@ class Album {
 
 
     findByText(text, res) {
-        const stringHasAtLeastFourCharacters = text.length > 3;
+        const stringHasAtLeastFourCharacters = text.length <= 3;
 
         const validation = {
-            message: 'Input text must have at least 4 characters'
+            field: 'Search',
+            message: 'Filter must have at least 4 characters'
         }
 
         if(stringHasAtLeastFourCharacters) {

@@ -26,7 +26,7 @@ class FormInputs extends Component {
             dataType: 'json',
             type:'get',
             success:function(response){
-                // this.setState({albums:response});
+                PubSub.publish('filterAlbums', response);
             },
             error: function(response){
                 console.log(response.status);
@@ -71,13 +71,13 @@ class FormInputs extends Component {
         return (
             <div>
                 <form id="actions" onSubmit={this.createRecord} method="post">
-                    <CustomInput id='labelArtist' type='text' name='Artist' onChange={this.setArtist}/>
-                    <CustomInput id='labelDescription' type='text' name='Description' onChange={this.setDescription}/>
+                    <CustomInput id='labelArtist' type='text' name='Artist' onChange={this.setArtist} value={this.state.artist}/>
+                    <CustomInput id='labelDescription' type='text' name='Description' onChange={this.setDescription} value={this.state.description}/>
                     <CustomButton text='Add' type="submit"/>
                 </form>
                 <form id="search" onSubmit={this.findByText} method="get">
-                    <CustomInput id='labelSearch' type='text' name='Search' onChange={this.setSearchString}/>
-                    <input id='searchInputButton' type='submit'/>
+                    <CustomInput id='labelSearch' type='text' name='Search' onChange={this.setSearchString} value={this.state.searchString}/>
+                    <CustomButton text='Filter' type="submit"/>
                 </form>
             </div>
         );

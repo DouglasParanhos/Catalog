@@ -21,11 +21,10 @@ class CustomInput extends Component {
     }
     
     render(){
-        // console.log("alterando " + this.errorMessage);
         return (
             <div>
                 <label htmlFor={this.props.id}>{this.props.name}</label>
-                <input id={this.props.id} type={this.props.type} name={this.props.name} onChange={this.props.onChange}/>
+                <input id={this.props.id} type={this.props.type} name={this.props.name} onChange={this.props.onChange} value={this.props.value}/>
                 <span>{this.state.errorMessage}</span>
             </div>
         );

@@ -28,6 +28,10 @@ class AlbumBox extends Component {
         PubSub.subscribe('updateAlbums', function(topic){
             this.refreshTable();    
         }.bind(this));
+
+        PubSub.subscribe('filterAlbums', function(topic, results){
+            this.setState({albums: results});
+        }.bind(this));
     }
     
     render(){
