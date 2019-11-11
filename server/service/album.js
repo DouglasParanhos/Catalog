@@ -6,20 +6,22 @@ class Album {
         const albumToBeInserted = {...album};
 
         let artistNameEmpty = false;
-        if(albumToBeInserted.artist == ''){
+        if(albumToBeInserted.artist.length == 0){
             artistNameEmpty = true;
         }
 
         let descriptionEmpty = false;
-        if(albumToBeInserted.description == ''){
+        if(albumToBeInserted.description. length == 0){
             descriptionEmpty = true;
         }
 
         const validationArtist = {
+            field: 'Artist',
             message: 'Artist Name can\'t be empty'
         }
 
         const validationDescription = {
+            field: 'Description',
             message: 'Description can\'t be empty'
         }
 

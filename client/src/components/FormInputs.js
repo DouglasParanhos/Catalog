@@ -42,12 +42,15 @@ class FormInputs extends Component {
             dataType: 'json',
             type:'post',
             data: JSON.stringify({artist: this.state.artist, description: this.state.description}),
-            success:function(response){
+            success:function(){
                 PubSub.publish('updateAlbums');
-                console.log(response);
-            },
+                this.setState({artist:'', description:''});
+            }.bind(this),
             error: function(response){
-                console.log(response.status);
+                PubSub.publish('errorsInsertingAlbum', response.responseJSON);
+            },
+            beforeSend: function(){
+                PubSub.publish('cleanErrorsInsertingAlbum');
             }
         });
     }
