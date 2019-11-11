@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import CustomInput from './CustomInput';
 import CustomButton from './CustomButton';
-// import PubSub from 'pubsub-js';
+import PubSub from 'pubsub-js';
 import $ from 'jquery';
 
 class FormInputs extends Component {
 
     constructor(){
         super();
-        this.state = {artist:'', description:''}
+        this.state = {artist:'', description:'', searchString: ''};
         this.findByText = this.findByText.bind(this);
         this.createRecord = this.createRecord.bind(this);
         this.setArtist = this.setArtist.bind(this);
@@ -18,8 +18,10 @@ class FormInputs extends Component {
 
     findByText(event){
         event.preventDefault();
+        let url = "http://localhost:3001/albums/bytext/" + this.state.searchString;
+
         $.ajax({
-            url:"http://localhost:3001/albums/bytext/paranhos",
+            url: url,
             contentType: 'application/json',
             dataType: 'json',
             type:'get',
@@ -27,7 +29,7 @@ class FormInputs extends Component {
                 // this.setState({albums:response});
             },
             error: function(response){
-                
+                console.log(response);
             }
         });
     }
@@ -41,7 +43,7 @@ class FormInputs extends Component {
             type:'post',
             data: JSON.stringify({artist: this.state.artist, description: this.state.description}),
             success:function(response){
-                this.props.refreshTableMethod();
+                PubSub.publish('updateAlbums');
             },
             error: function(response){
                 console.log(response);

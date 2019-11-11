@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import FormInputs from './FormInputs';
 import AlbumsTable from './AlbumsTable';
+import PubSub from 'pubsub-js';
 import $ from 'jquery';
 
 class AlbumBox extends Component {
@@ -23,12 +24,16 @@ class AlbumBox extends Component {
 
     componentDidMount(){
         this.refreshTable();
+
+        PubSub.subscribe('updateAlbums', function(topic){
+            this.refreshTable();    
+        }.bind(this));
     }
     
     render(){
         return (
             <div>
-                <FormInputs refreshTableMethod={this.refreshTable}/>
+                <FormInputs />
                 <AlbumsTable albums={this.state.albums}/>
             </div>
         );
