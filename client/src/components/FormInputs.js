@@ -18,7 +18,8 @@ class FormInputs extends Component {
 
     findByText(event){
         event.preventDefault();
-        let url = "http://localhost:3001/albums/bytext/" + this.state.searchString;
+        let path =  this.state.searchString.length === 0? 'err' : this.state.searchString;
+        let url = 'http://localhost:3001/albums/bytext/' + path;
 
         $.ajax({
             url: url,
@@ -29,7 +30,10 @@ class FormInputs extends Component {
                 PubSub.publish('filterAlbums', response);
             },
             error: function(response){
-                console.log(response.status);
+                PubSub.publish('errorsInputs', response.responseJSON);
+            },
+            beforeSend: function(){
+                PubSub.publish('cleanErrorsInsertingAlbum');
             }
         });
     }
@@ -47,7 +51,7 @@ class FormInputs extends Component {
                 this.setState({artist:'', description:''});
             }.bind(this),
             error: function(response){
-                PubSub.publish('errorsInsertingAlbum', response.responseJSON);
+                PubSub.publish('errorsInputs', response.responseJSON);
             },
             beforeSend: function(){
                 PubSub.publish('cleanErrorsInsertingAlbum');
@@ -64,7 +68,7 @@ class FormInputs extends Component {
     }
 
     setSearchString(event){
-        this.setState({description:event.target.value});
+        this.setState({searchString:event.target.value});
     }
 
     render(){

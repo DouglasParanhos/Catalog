@@ -13,9 +13,9 @@ module.exports = app => {
     });
 
     app.get('/albums/bytext/:text', (req, res) => {
-        const text = parseInt(req.params.text);
+        const text = req.params.text;
 
-        Album.findById(text, res);
+        Album.findByText(text, res);
     });
 
     app.post('/albums', (req, res) => {

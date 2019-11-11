@@ -80,9 +80,10 @@ class Album {
 
         if(stringHasAtLeastFourCharacters) {
             res.status(400).json(validation);
+            return;
         }
 
-        const sql = `SELECT * FROM Album WHERE LOWER(description) LIKE LOWER(%${text}%) OR artist LIKE LOWER(%${text}%)`;
+        const sql = `SELECT * FROM Album WHERE LOWER(description) LIKE LOWER(\'%${text}%\') OR LOWER(artist) LIKE LOWER(\'%${text}%\')`;
 
         connection.query(sql, (error, results) => {
             if(error) {

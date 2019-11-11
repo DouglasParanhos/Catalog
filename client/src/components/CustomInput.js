@@ -9,7 +9,7 @@ class CustomInput extends Component {
     }
 
     componentDidMount(){
-        PubSub.subscribe("errorsInsertingAlbum", function(topic, error){
+        PubSub.subscribe("errorsInputs", function(topic, error){
             if(error.field === this.props.name){
                 this.setState({errorMessage: error.message});
             }
