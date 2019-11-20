@@ -13,6 +13,7 @@ class AlbumsTable extends Component {
                 <table>
                     <thead>
                         <tr>
+                            <th>Name</th>
                             <th>Artist</th>
                             <th>Description</th>
                             <th>Number of Songs</th>
@@ -24,6 +25,7 @@ class AlbumsTable extends Component {
                             this.props.albums.map(function(album){
                                 return (
                                     <tr key={album.id}>
+                                        <td>{album.name}</td>
                                         <td>{album.artist}</td>
                                         <td>{album.description}</td>
                                         <td>{album.totalSongs}</td>

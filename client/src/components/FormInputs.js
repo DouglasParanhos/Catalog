@@ -8,9 +8,10 @@ class FormInputs extends Component {
 
     constructor(){
         super();
-        this.state = {artist:'', description:'', searchString: ''};
+        this.state = {name:'', artist:'', description:'', searchString: ''};
         this.findByText = this.findByText.bind(this);
         this.createRecord = this.createRecord.bind(this);
+        this.setName = this.setName.bind(this);
         this.setArtist = this.setArtist.bind(this);
         this.setDescription = this.setDescription.bind(this);
         this.setSearchString = this.setSearchString.bind(this);
@@ -45,7 +46,7 @@ class FormInputs extends Component {
             contentType: 'application/json',
             dataType: 'json',
             type:'post',
-            data: JSON.stringify({artist: this.state.artist, description: this.state.description}),
+            data: JSON.stringify({name: this.state.name, artist: this.state.artist, description: this.state.description}),
             success:function(){
                 PubSub.publish('updateAlbums');
                 this.setState({artist:'', description:''});
@@ -57,6 +58,10 @@ class FormInputs extends Component {
                 PubSub.publish('cleanErrorsInsertingAlbum');
             }
         });
+    }
+
+    setName(event){
+        this.setState({name:event.target.value});
     }
 
     setArtist(event){
@@ -75,6 +80,7 @@ class FormInputs extends Component {
         return (
             <div>
                 <form id="actions" onSubmit={this.createRecord} method="post">
+                    <CustomInput id='labelName' type='text' name='Name' onChange={this.setName} value={this.state.name}/>
                     <CustomInput id='labelArtist' type='text' name='Artist' onChange={this.setArtist} value={this.state.artist}/>
                     <CustomInput id='labelDescription' type='text' name='Description' onChange={this.setDescription} value={this.state.description}/>
                     <CustomButton text='Add' type="submit"/>

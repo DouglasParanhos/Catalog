@@ -5,6 +5,11 @@ class Album {
 
         const albumToBeInserted = {...album};
 
+        let albumNameEmpty = false;
+        if(albumToBeInserted.name.length == 0){
+            albumNameEmpty = true;
+        }
+
         let artistNameEmpty = false;
         if(albumToBeInserted.artist.length == 0){
             artistNameEmpty = true;
@@ -13,6 +18,11 @@ class Album {
         let descriptionEmpty = false;
         if(albumToBeInserted.description. length == 0){
             descriptionEmpty = true;
+        }
+
+        const validationName = {
+            field: 'Name',
+            message: 'Album Name can\'t be empty'
         }
 
         const validationArtist = {
@@ -25,7 +35,10 @@ class Album {
             message: 'Description can\'t be empty'
         }
 
-        if(artistNameEmpty) {
+        if(albumNameEmpty){
+            res.status(400).json(validationName);
+            return;
+        } else if(artistNameEmpty) {
             res.status(400).json(validationArtist);
             return;
         } else if(descriptionEmpty){
@@ -83,7 +96,7 @@ class Album {
             return;
         }
 
-        const sql = `SELECT * FROM Album WHERE LOWER(description) LIKE LOWER(\'%${text}%\') OR LOWER(artist) LIKE LOWER(\'%${text}%\')`;
+        const sql = `SELECT * FROM Album WHERE LOWER(description) LIKE LOWER(\'%${text}%\') OR LOWER(artist) LIKE LOWER(\'%${text}%\') OR LOWER(name) LIKE LOWER(\'%${text}%\')`;
 
         connection.query(sql, (error, results) => {
             if(error) {
@@ -120,9 +133,9 @@ class Album {
 
     findAlbumsTotalSongs(res){
 
-        const sql = `SELECT a.id as id, a.description as description, a.release_date as release_date, a.artist as artist, COUNT(x.id) as totalSongs 
+        const sql = `SELECT a.id as id, a.name as name,a.description as description, a.release_date as release_date, a.artist as artist, COUNT(x.id) as totalSongs 
                     FROM Album a LEFT JOIN (SELECT * FROM Song) as x ON a.id = x.album_id 
-                    GROUP BY id, description, release_date, artist 
+                    GROUP BY id, name, description, release_date, artist 
                     ORDER BY artist;`; 
 
         connection.query(sql, (error, results) => {
