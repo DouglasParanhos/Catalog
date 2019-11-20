@@ -118,10 +118,26 @@ class Album {
         });
     }
 
+    findAlbumsTotalSongs(res){
+
+        const sql = `SELECT a.id as id, a.description as description, a.release_date as release_date, a.artist as artist, COUNT(x.id) as totalSongs 
+                    FROM Album a LEFT JOIN (SELECT * FROM Song) as x ON a.id = x.album_id 
+                    GROUP BY id, description, release_date, artist 
+                    ORDER BY artist;`; 
+
+        connection.query(sql, (error, results) => {
+            if(error) {
+                res.status(400).json(error);
+            } else {
+                res.status(200).json(results);
+            }
+        });
+    }
+
     countSongsByAlbum(id, res) {
         const sql = 'SELECT COUNT (*) FROM Song WHERE album_id=?'
 
-        connection.query(sql, id, (error, results) => {
+        connection.query(sql, (error, results) => {
             if(error) {
                 res.status(400).json(error);
             } else {

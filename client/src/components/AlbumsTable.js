@@ -15,8 +15,8 @@ class AlbumsTable extends Component {
                         <tr>
                             <th>Artist</th>
                             <th>Description</th>
-                            {/* <th>Number of Songs</th>
-                            <th>Actions</th> */}
+                            <th>Number of Songs</th>
+                            {/* <th>Actions</th> */}
                         </tr>
                     </thead>
                     <tbody>
@@ -26,6 +26,7 @@ class AlbumsTable extends Component {
                                     <tr key={album.id}>
                                         <td>{album.artist}</td>
                                         <td>{album.description}</td>
+                                        <td>{album.totalSongs}</td>
                                         {/* <td>0</td> */}
                                     </tr>
                                 );

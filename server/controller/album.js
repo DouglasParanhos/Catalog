@@ -6,6 +6,10 @@ module.exports = app => {
         Album.findAll(res);
     });
 
+    app.get('/albumsSongs', (req, res) => {
+        Album.findAlbumsTotalSongs(res);
+    });
+
     app.get('/albums/:id', (req, res) => {
         const id = parseInt(req.params.id);
 
