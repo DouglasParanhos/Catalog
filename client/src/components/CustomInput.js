@@ -10,6 +10,7 @@ class CustomInput extends Component {
 
     componentDidMount(){
         PubSub.subscribe("errorsInputs", function(topic, error){
+            
             if(error.field === this.props.name){
                 this.setState({errorMessage: error.message});
             }
