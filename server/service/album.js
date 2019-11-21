@@ -84,7 +84,7 @@ class Album {
 
 
     findByText(text, res) {
-        const stringHasAtLeastFourCharacters = text.length <= 3;
+        const stringHasAtLeastFourCharacters = (text.length <= 3);
 
         const validation = {
             field: 'Search',
@@ -96,15 +96,25 @@ class Album {
             return;
         }
 
-        const sql = `SELECT * FROM Album WHERE LOWER(description) LIKE LOWER(\'%${text}%\') OR LOWER(artist) LIKE LOWER(\'%${text}%\') OR LOWER(name) LIKE LOWER(\'%${text}%\')`;
+        if(text == 'stringError') {
+            this.findAlbumsTotalSongs(res);
+        } else {
+            const sql = `SELECT a.id as id, a.name as name,a.description as description, a.release_date as release_date, a.artist as artist, COUNT(x.id) as totalSongs
+                        FROM Album a LEFT JOIN (SELECT * FROM Song) as x ON a.id = x.album_id 
+                        WHERE LOWER(description) LIKE LOWER(\'%${text}%\') OR 
+                        LOWER(artist) LIKE LOWER(\'%${text}%\') OR 
+                        LOWER(name) LIKE LOWER(\'%${text}%\')
+                        GROUP BY id, name, description, release_date, artist 
+                        ORDER BY artist`;
 
-        connection.query(sql, (error, results) => {
-            if(error) {
-                res.status(400).json(error);
-            } else {
-                res.status(200).json(results);
-            }
-        });
+            connection.query(sql, (error, results) => {
+                if(error) {
+                    res.status(400).json(error);
+                } else {
+                    res.status(200).json(results);
+                }
+            });
+        }
     }
 
     update(id, values, res) {

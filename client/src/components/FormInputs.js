@@ -19,7 +19,7 @@ class FormInputs extends Component {
 
     findByText(event){
         event.preventDefault();
-        let path =  this.state.searchString.length === 0? 'err' : this.state.searchString;
+        let path =  this.state.searchString.length === 0? 'stringError' : this.state.searchString;
         let url = 'http://localhost:3001/albums/bytext/' + path;
 
         $.ajax({
@@ -49,7 +49,7 @@ class FormInputs extends Component {
             data: JSON.stringify({name: this.state.name, artist: this.state.artist, description: this.state.description}),
             success:function(){
                 PubSub.publish('updateAlbums');
-                this.setState({artist:'', description:''});
+                this.setState({name:'', artist:'', description:''});
             }.bind(this),
             error: function(response){
                 PubSub.publish('errorsInputs', response.responseJSON);
