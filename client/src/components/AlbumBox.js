@@ -14,7 +14,7 @@ class AlbumBox extends Component {
 
     refreshTable(){
         $.ajax({
-            url:"http://localhost:3001/albums",
+            url:"http://localhost:3001/albumsSongs",
             dataType: 'json',
             success:function(response){
                 this.setState({albums:response});

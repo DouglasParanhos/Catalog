@@ -25,6 +25,7 @@ class Database {
             'description VARCHAR(500), ' +
             'release_date DATETIME, ' +
             'artist VARCHAR(500) NOT NULL, ' +
+            'name VARCHAR(500) NOT NULL, ' +
             
             'PRIMARY KEY(id))';
 

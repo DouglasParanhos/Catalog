@@ -5,6 +5,11 @@ class Album {
 
         const albumToBeInserted = {...album};
 
+        let albumNameEmpty = false;
+        if(albumToBeInserted.name.length == 0){
+            albumNameEmpty = true;
+        }
+
         let artistNameEmpty = false;
         if(albumToBeInserted.artist.length == 0){
             artistNameEmpty = true;
@@ -13,6 +18,11 @@ class Album {
         let descriptionEmpty = false;
         if(albumToBeInserted.description. length == 0){
             descriptionEmpty = true;
+        }
+
+        const validationName = {
+            field: 'Name',
+            message: 'Album Name can\'t be empty'
         }
 
         const validationArtist = {
@@ -25,7 +35,10 @@ class Album {
             message: 'Description can\'t be empty'
         }
 
-        if(artistNameEmpty) {
+        if(albumNameEmpty){
+            res.status(400).json(validationName);
+            return;
+        } else if(artistNameEmpty) {
             res.status(400).json(validationArtist);
             return;
         } else if(descriptionEmpty){
@@ -71,7 +84,7 @@ class Album {
 
 
     findByText(text, res) {
-        const stringHasAtLeastFourCharacters = text.length <= 3;
+        const stringHasAtLeastFourCharacters = (text.length <= 3);
 
         const validation = {
             field: 'Search',
@@ -83,15 +96,25 @@ class Album {
             return;
         }
 
-        const sql = `SELECT * FROM Album WHERE LOWER(description) LIKE LOWER(\'%${text}%\') OR LOWER(artist) LIKE LOWER(\'%${text}%\')`;
+        if(text == 'stringError') {
+            this.findAlbumsTotalSongs(res);
+        } else {
+            const sql = `SELECT a.id as id, a.name as name,a.description as description, a.release_date as release_date, a.artist as artist, COUNT(x.id) as totalSongs
+                        FROM Album a LEFT JOIN (SELECT * FROM Song) as x ON a.id = x.album_id 
+                        WHERE LOWER(description) LIKE LOWER(\'%${text}%\') OR 
+                        LOWER(artist) LIKE LOWER(\'%${text}%\') OR 
+                        LOWER(name) LIKE LOWER(\'%${text}%\')
+                        GROUP BY id, name, description, release_date, artist 
+                        ORDER BY artist`;
 
-        connection.query(sql, (error, results) => {
-            if(error) {
-                res.status(400).json(error);
-            } else {
-                res.status(200).json(results);
-            }
-        });
+            connection.query(sql, (error, results) => {
+                if(error) {
+                    res.status(400).json(error);
+                } else {
+                    res.status(200).json(results);
+                }
+            });
+        }
     }
 
     update(id, values, res) {
@@ -110,6 +133,34 @@ class Album {
         const sql = 'DELETE FROM Album WHERE id=?'
 
         connection.query(sql, id, (error, results) => {
+            if(error) {
+                res.status(400).json(error);
+            } else {
+                res.status(200).json({id});
+            }
+        });
+    }
+
+    findAlbumsTotalSongs(res){
+
+        const sql = `SELECT a.id as id, a.name as name,a.description as description, a.release_date as release_date, a.artist as artist, COUNT(x.id) as totalSongs 
+                    FROM Album a LEFT JOIN (SELECT * FROM Song) as x ON a.id = x.album_id 
+                    GROUP BY id, name, description, release_date, artist 
+                    ORDER BY artist;`; 
+
+        connection.query(sql, (error, results) => {
+            if(error) {
+                res.status(400).json(error);
+            } else {
+                res.status(200).json(results);
+            }
+        });
+    }
+
+    countSongsByAlbum(id, res) {
+        const sql = 'SELECT COUNT (*) FROM Song WHERE album_id=?'
+
+        connection.query(sql, (error, results) => {
             if(error) {
                 res.status(400).json(error);
             } else {
